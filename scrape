@@ -1,0 +1,19 @@
+# A very simple scaper written with a few lines of Bash
+# Considering the user agent is up-to-date this will work as expected
+#!/bin/bash
+
+if [ -z "$1" ]
+ then
+  echo "Usage: ./scrape domain.com"
+ exit 1
+fi
+
+TMP=`echo tmp.$RANDOM`
+
+curl -A "Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.7113.93 Safari/537.36" -sL $1 | grep -oP "http(s?):\/\/[^ \"\(\)\<\>]*" >> $TMP
+
+cat $TMP
+
+echo -e "\nTotal `cat $TMP | wc -l ` URLs\n"
+
+rm $TMP
